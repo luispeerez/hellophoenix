@@ -1,0 +1,4 @@
+<div class="jumbotron">
+	<h2>Hello world, from Phoenix</h2>
+	<p><a href="<%= page_path(@conn, :index) %>">To the Welcome Page!</a></p>
+</div>
