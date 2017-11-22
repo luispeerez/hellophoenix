@@ -15,8 +15,17 @@ use Mix.Config
 # which you typically run after static files are built.
 config :hellophoenix, HellophoenixWeb.Endpoint,
   load_from_system_env: true,
+  http: [port: {:system, "PORT"}],
   url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  https: [
+  	port: 443,
+  	otp_app: :hellophoenix,
+  	keyfile: System.get_env("SOME_APP_SSL_KEY_PATH"),
+  	certfile: System.get_env("SOME_APP_SSL_CERT_PATH"),
+  	cacertfile: System.get_env("INTERMEDIATE_CERTFILE_PATH")
+  ]
 
 # Do not print debug messages in production
 config :logger, level: :info

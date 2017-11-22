@@ -1,18 +1,45 @@
+defmodule HellophoenixWeb.Plugs.Locale do
+  import Plug.Conn
+
+  @locales ["en", "fr", "de"]
+
+  def init(default), do: default
+
+  def call(%Plug.Conn{params: %{"locale" => loc}} = conn, _default) when loc in @locales do
+    assign(conn, :locale, loc)
+  end
+
+  def call(conn, default), do: assign(conn, :locale, default)
+
+end
+
 defmodule HellophoenixWeb.Router do
   use HellophoenixWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
+    plug :accepts, ["html", "text"]
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug HellophoenixWeb.Plugs.Locale, "fr"
+    #plug OurAuth
+    #plug :put_user_token
   end
 
-  pipeline :reviews_checks do
-    plug :ensure_authenticated_user
-    plug :ensure_user_owns_review
+  defp put_user_token(conn, _) do
+    if current_user =  conn.assigns[:current_user] do
+      token = Phoenix.Token.sign(conn, "user socket", current_user.id)
+      assign(conn, :user_token, token)
+    else
+      conn
+    end
   end
+
+  #pipeline :reviews_checks do
+  #  plug :ensure_authenticated_user
+  #  plug :ensure_user_owns_review
+  #end
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -42,6 +69,13 @@ defmodule HellophoenixWeb.Router do
 
 
     get "/", PageController, :index
+    get "/test", PageController, :test
+    get "/sampletemplate", PageController, :sampletemplate
+    get "/redirect_test", PageController, :redirect_test, as: :redirect_test
+    get "/showtext", PageController, :showText
+    get "/showjson", PageController, :showJson
+    get "/showhtml", PageController, :showHtml
+
 
     get "/hello", HelloController, :index
     get "/hello/:messenger", HelloController, :show
@@ -65,9 +99,9 @@ defmodule HellophoenixWeb.Router do
   # end
 
 
-  scope "/reviews2" HellophoenixWeb do
-    pipe_through :reviews_checks
-    resources "/", ReviewController
+  #scope "/reviews2" HellophoenixWeb do
+  #  pipe_through :reviews_checks
+  #  resources "/", ReviewController
   #Use multiple pipelines
   #  pipe_through [:browser, :reviews_checks, :other_stuff]
   #  resources "/", HellophoenixWeb.ReviewController

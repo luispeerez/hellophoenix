@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Hellophoenix!</title>
+    <title>Admin!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
 
     <script>
@@ -21,10 +21,10 @@
       <header class="header">
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+            <li><a href="http://www.phoenixframework.org/docs">Get Started admin layout</a></li>
           </ul>
         </nav>
-        <span class="logo"></span>
+        <!--<span class="logo"></span>-->
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
