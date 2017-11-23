@@ -36,6 +36,18 @@ defmodule HellophoenixWeb.Router do
     end
   end
 
+  defp autheticate_user(conn, _) do
+    case get_session(conn, :user_id) do
+      nil -> 
+        conn 
+        |> Phoenix.Controller.put_flash(:error, "Login required")
+        |> Phoenix.Controller.redirect(to: "/")
+        |> halt()
+      user_id -> 
+        assign(conn, :current_user, Hellophoenix.Accounts.get_user!(user_id))
+    end
+  end
+
   #pipeline :reviews_checks do
   #  plug :ensure_authenticated_user
   #  plug :ensure_user_owns_review
@@ -53,6 +65,11 @@ defmodule HellophoenixWeb.Router do
 
   scope "/", HellophoenixWeb do
     pipe_through :browser # Use the default browser stack
+
+    resources "/users", UserController
+    resources "/sessions", SessionController, only: [:new, :create, :delete], singleton: true
+    #singleton: true option, which defines all the RESTful routes,
+    #but does not require a resource ID to be passed along in the URL
 
     #We can even use the forward/4 macro in a pipeline. 
     #If we wanted to ensure that the user was authenticated and an 
