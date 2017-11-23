@@ -107,6 +107,12 @@ defmodule HellophoenixWeb.Router do
 
   end
 
+  scope "/cms", HellophoenixWeb.CMS, as: :cms do
+    pipe_through [:browser, :autheticate_user]
+
+    resources "/pages", PageController
+  end
+
   #This means that all routes starting with /jobs will be sent to the BackgroundJob.Plug module.
   forward "/jobs", BackgroundJob.Plug, name: "A forwarded job"
 

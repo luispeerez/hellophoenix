@@ -1,0 +1,7 @@
+<h2>New Page</h2>
+
+<h1>Usuario activo: <%= @conn.assigns.current_user.username %></h1>
+
+<%= render "form.html", Map.put(assigns, :action, cms_page_path(@conn, :create)) %>
+
+<span><%= link "Back", to: cms_page_path(@conn, :index) %></span>
