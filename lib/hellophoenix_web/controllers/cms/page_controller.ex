@@ -58,7 +58,7 @@ defmodule HellophoenixWeb.CMS.PageController do
         |> redirect(to: cms_page_path(conn, :show, page))
 
       {:error, %Ecto.Changeset{} = changeset} -> 
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new2.html", changeset: changeset)
     end
   end
 

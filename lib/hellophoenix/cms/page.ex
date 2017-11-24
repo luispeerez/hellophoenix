@@ -8,7 +8,7 @@ defmodule Hellophoenix.CMS.Page do
     field :body, :string
     field :title, :string
     field :views, :integer
-    belongs_to :author, :integer
+    belongs_to :author, Author
 
     timestamps()
   end
@@ -17,8 +17,6 @@ defmodule Hellophoenix.CMS.Page do
   def changeset(%Page{} = page, attrs) do
     page
     |> cast(attrs, [:title, :body, :views])
-    |> validate_required([:title, :body, :views])
-    |> cast(attrs, [:title, :body])
     |> validate_required([:title, :body])
   end
 end
