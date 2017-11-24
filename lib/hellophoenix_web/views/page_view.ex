@@ -10,4 +10,12 @@ defmodule HellophoenixWeb.PageView do
   	|> Map.from_struct()
   	|> Map.keys()
   end
+
+  def getEnv() do
+  	#env = Application.get_env(:hellophoenix, :debug_errors)
+  	#IO.inspect env
+  	env = System.get_env("MIX_ENV")
+  	IO.inspect env
+  	env
+  end
 end
