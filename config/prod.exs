@@ -16,9 +16,11 @@ use Mix.Config
 config :hellophoenix, HellophoenixWeb.Endpoint,
   load_from_system_env: true,
   http: [port: {:system, "PORT"}],
-  url: [host: "localhost", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
-  #force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  #url: [host: "localhost", port: 80],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
+  url: [schema: "https", host: "fierce-bastion-32044.herokuapp.com", port: 443],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]]
   #https: [
   #	port: 443,
   #	otp_app: :hellophoenix,
@@ -70,4 +72,11 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
-import_config "prod.secret.exs"
+#import_config "prod.secret.exs"
+
+
+config :hellophoenix, Hellophoenix.Repo, 
+  adapter: Ecto.Adapters.Postgres,
+  url: System.get_env("DATABASE_URL"),
+  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+  ssl: true
